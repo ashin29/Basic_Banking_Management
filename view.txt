@@ -1,0 +1,167 @@
+<!doctype html>
+<html>
+<style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: teal;
+}
+
+table{
+color:white;
+background-color:#66727B;
+border-radius:25px;
+}
+
+table.tab1{
+color:white;
+background-color:#50585E;
+text-align: center;
+border-radius:10px;
+	
+}
+
+#btn{
+height:30px;
+width:95px;
+border-radius:25px;
+}
+
+html { 
+  background: url(rails.jpeg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+h3{
+background-color:#092B55;
+padding-left: 0px;
+padding-right: 0px;
+border-radius:25px;
+}
+
+
+</style>
+<head>
+<center>
+	
+</head>
+
+<body>
+
+<ul>
+	<li><a href="railhome.html"><font color="white"><b>Home</font></a></li>
+</ul>
+<head><font color="white" size="50" align="center"><h3>Find Trains</h3></font></head>
+
+
+	<br>
+	<form action="" method="POST">
+	
+	<table align = "center" border="0" cellspacing="15">
+	
+	<tr>
+		<td>Source:<td><input type= "text" name="source" placeholder="Source" required></td>
+	</tr>
+	<tr>
+		<td>Destination:<td><input type= "text" name="destination" placeholder="Destination" required></td>
+	</tr>
+	<tr></tr>
+	<tr>
+		<td align="center" colspan="2"><button type="submit" name="submit" id="btn" required>Submit</button></td>
+	</tr>
+	<tr></tr>
+	</table>
+	</form> <br><br><br><br><br>
+	
+<center>
+<table border="4" cellspacing="5" class="tab1">
+<tr>
+<th>Train No</th>
+<th>Train Name</th>
+<th>Date of Journey</th>
+<th>Source</th>
+<th>Destination</th>
+<th>Availability</th>
+</tr>
+	
+
+
+<?php
+error_reporting(0);
+$hostname = "localhost";
+$username = "root";
+$password = "";
+$dbname = "railway";
+
+// Create connection
+$conn = new mysqli($hostname, $username, $password, $dbname);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+
+$source = $_POST['source'] ;
+$destination = $_POST['destination'] ;  
+
+
+$sql = "SELECT `train_no`,`train_name`,`date`,`source`,`destination`, `availability`
+		FROM `train` 
+		WHERE `source` = '$source'
+		AND `destination`= '$destination'";	
+		
+
+	
+$query = "select * from train where source = '$source' AND destination = '$destination'";
+$data = mysqli_query($conn,$query);
+$total = mysqli_num_rows($data);
+
+if($total!=0)
+{
+ while($result=mysqli_fetch_assoc($data))
+ {
+  echo "
+  <tr>
+  <td>".$result['train_no']."</td>
+  <td>".$result['train_name']."</td>
+  <td>".$result['date']."</td>
+  <td>".$result['source']."</td>
+  <td>".$result['destination']."</td>
+  <td>".$result['availability']."</td>
+  ";
+ }
+}
+
+$conn->close();
+?>
+</body>
+</html>
